@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Theo đuổi crush</title>
+</head>
+<body>
+	<style type="text/css">
+		* {
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
+		}
+
+		html {
+			font-family: sans-serif;
+		}
+
+		body {
+			background-color: lightcyan;
+		}
+
+		#main {
+			position: relative;
+			width: 1200px;
+			height: 500px;
+			margin: 30px auto 0;
+			background-color: #ccc;
+			overflow: hidden;
+		}
+
+		.bg-img {
+			position: absolute;
+			top: 0;
+			bottom: 100px;
+			left: 0;
+			right: -600px;
+			background-image: url('https://images.all-free-download.com/images/graphicthumb/white_trees_background_repeating_pattern_design_6826889.jpg');
+			opacity: 0.8;
+			animation: movingSpace linear 3s infinite;
+		}
+
+		.text {
+			position: absolute;
+			top: -160px;
+			left: -100px;
+			width: 260px;
+			height: 80px;
+			text-align: center;
+		}
+
+		.text h2 {
+			color: red;
+			font-size: 32px;
+			line-height: 36px;
+		}
+
+		.text span {
+			display: block;
+			font-size: 18px;
+			font-weight: bold;
+			color: #000;
+		}
+
+		.me {
+			position: absolute;
+			top: 40%;
+			left: 50%;
+			width: 70px;
+			height: 160px;
+			border-top-left-radius: 35px;
+			border-top-right-radius: 35px;
+		}
+
+		.me-body {
+			position: absolute;
+			top: 0;
+			right: 0;
+			bottom: 0;
+			left: 0;
+			background-color: darkblue;
+			border-top-left-radius: 35px;
+			border-top-right-radius: 35px;
+			z-index: 20;
+		}
+
+		.me-head {
+			position: absolute;
+			top: -70px;
+			left: 0;
+			width: 70px;
+			height: 70px;
+			background-color: orange;
+			border-radius: 100%;
+		}
+
+		.me-arm-left {
+			position: absolute;
+			top: -40px;
+			left: calc(50% - 15px);
+			width: 30px;
+			height: 140px;
+			border-width: 70px 0;
+			border-style: solid;
+			border-color: transparent transparent darkgreen;
+			border-radius: 15px;
+			z-index: 10;
+			animation: runFirst ease-in-out .4s infinite;
+		}
+
+		.me-arm-left::before {
+			position: absolute;
+			top: -15px;
+			left: 0;
+			content: "";
+			width: 30px;
+			height: 30px;
+			border-radius: 100%;
+			background-color: darkgreen;
+		}
+
+		.me-arm-left::after {
+			position: absolute;
+			bottom: -70px;
+			left: 0;
+			content: "";
+			width: 70px;
+			height: 30px;
+			border-radius: 15px;
+			background-color: darkgreen;
+		}
+
+		.me-arm-right {
+			position: absolute;
+			top: -40px;
+			left: calc(50% - 15px);
+			width: 30px;
+			height: 140px;
+			border-width: 70px 0;
+			border-style: solid;
+			border-color: transparent transparent darkgreen;
+			border-radius: 15px;
+			z-index: 30;
+			animation: runLast ease-in-out .4s infinite;
+		}
+
+		.me-arm-right::before {
+			position: absolute;
+			top: -15px;
+			left: 0;
+			content: "";
+			width: 30px;
+			height: 30px;
+			border-radius: 100%;
+			background-color: darkgreen;
+		}
+
+		.me-arm-right::after {
+			position: absolute;
+			bottom: -70px;
+			left: 0;
+			content: "";
+			width: 70px;
+			height: 30px;
+			border-radius: 15px;
+			background-color: darkgreen;
+			z-index: 10;
+		}
+
+		.me-leg-left {
+			position: absolute;
+			bottom: -110px;
+			left: calc(50% - 20px);
+			width: 40px;
+			height: 260px;
+			border-radius: 20px;
+			border-width: 130px 0;
+			border-style: solid;
+			border-color: transparent transparent darkgreen;
+			z-index: 10;
+			animation: runLast ease-in-out .4s infinite;
+		}
+
+		.me-leg-left::before {
+			position: absolute;
+			content: "";
+			top: calc(50% - 20px);
+			left: 0;
+			width: 40px;
+			height: 40px;
+			border-radius: 100%;
+			background-color: darkgreen;
+		}
+
+		.me-leg-right {
+			position: absolute;
+			bottom: -110px;
+			left: calc(50% - 20px);
+			width: 40px;
+			height: 260px;
+			border-radius: 20px;
+			border-width: 130px 0;
+			border-style: solid;
+			border-color: transparent transparent darkgreen;
+			z-index: 30;
+			animation: runFirst ease-in-out .4s infinite;
+		}
+
+		.me-leg-right::before {
+			position: absolute;
+			content: "";
+			top: calc(50% - 20px);
+			left: 0;
+			width: 40px;
+			height: 40px;
+			border-radius: 100%;
+			background-color: darkgreen;
+		}
+		.crush {
+			position: absolute;
+			top: 40%;
+			right: 100px;
+			width: 70px;
+			height: 160px;
+			border-top-left-radius: 35px;
+			border-top-right-radius: 35px;
+		}
+
+		.crush-body {
+			position: absolute;
+			top: 0;
+			right: 0;
+			bottom: 0;
+			left: 0;
+			background-color: darkviolet;
+			border-top-left-radius: 35px;
+			border-top-right-radius: 35px;
+			z-index: 20;
+		}
+
+		.crush-body::before {
+			position: absolute;
+			content: "";
+			bottom: 0;
+			left: -20px;
+			border-width: 65px 10px;
+			border-style: solid;
+			border-color: transparent darkviolet darkviolet transparent;
+		}
+
+		.crush-body::after {
+			position: absolute;
+			content: "";
+			bottom: 0;
+			right: -20px;
+			border-width: 65px 10px;
+			border-style: solid;
+			border-color: transparent transparent darkviolet darkviolet;
+		}
+
+		.crush-head {
+			position: absolute;
+			top: -70px;
+			left: 0;
+			width: 70px;
+			height: 70px;
+			background-color: orangered;
+			border-radius: 100%;
+		}
+
+		.crush-arm-left {
+			position: absolute;
+			top: -40px;
+			left: calc(50% - 15px);
+			width: 30px;
+			height: 140px;
+			border-width: 70px 0;
+			border-style: solid;
+			border-color: transparent transparent darkorange;
+			border-radius: 15px;
+			z-index: 10;
+			animation: runFirst ease-in-out .4s infinite;
+		}
+
+		.crush-arm-left::before {
+			position: absolute;
+			top: -15px;
+			left: 0;
+			content: "";
+			width: 30px;
+			height: 30px;
+			border-radius: 100%;
+			background-color: darkorange;
+		}
+
+		.crush-arm-left::after {
+			position: absolute;
+			bottom: -70px;
+			left: 0;
+			content: "";
+			width: 70px;
+			height: 30px;
+			border-radius: 15px;
+			background-color: darkorange;
+		}
+
+		.crush-arm-right {
+			position: absolute;
+			top: -40px;
+			left: calc(50% - 15px);
+			width: 30px;
+			height: 140px;
+			border-width: 70px 0;
+			border-style: solid;
+			border-color: transparent transparent darkorange;
+			border-radius: 15px;
+			z-index: 30;
+			animation: runLast ease-in-out .4s infinite;
+		}
+
+		.crush-arm-right::before {
+			position: absolute;
+			top: -15px;
+			left: 0;
+			content: "";
+			width: 30px;
+			height: 30px;
+			border-radius: 100%;
+			background-color: darkorange;
+		}
+
+		.crush-arm-right::after {
+			position: absolute;
+			bottom: -70px;
+			left: 0;
+			content: "";
+			width: 70px;
+			height: 30px;
+			border-radius: 15px;
+			background-color: darkorange;
+			z-index: 10;
+		}
+
+		.crush-leg-left {
+			position: absolute;
+			bottom: -110px;
+			left: calc(50% - 20px);
+			width: 40px;
+			height: 260px;
+			border-radius: 20px;
+			border-width: 130px 0;
+			border-style: solid;
+			border-color: transparent transparent darkorange;
+			z-index: 10;
+			animation: runLast ease-in-out .4s infinite;
+		}
+
+		.crush-leg-left::before {
+			position: absolute;
+			content: "";
+			top: calc(50% - 20px);
+			left: 0;
+			width: 40px;
+			height: 40px;
+			border-radius: 100%;
+			background-color: darkorange;
+		}
+
+		.crush-leg-right {
+			position: absolute;
+			bottom: -110px;
+			left: calc(50% - 20px);
+			width: 40px;
+			height: 260px;
+			border-radius: 20px;
+			border-width: 130px 0;
+			border-style: solid;
+			border-color: transparent transparent darkorange;
+			z-index: 30;
+			animation: runFirst ease-in-out .4s infinite;
+		}
+
+		.crush-leg-right::before {
+			position: absolute;
+			content: "";
+			top: calc(50% - 20px);
+			left: 0;
+			width: 40px;
+			height: 40px;
+			border-radius: 100%;
+			background-color: darkorange;
+		}
+
+		.dog {
+			position: absolute;
+			bottom: 80px;
+			left: 80px;
+			width: 160px;
+			height: 60px;
+			border-radius: 60px;
+			background-color: #333;
+		}
+
+		.dog::before {
+			position: absolute;
+			top: -80px;
+			left: 60px;
+			content: "DOG";
+			color: red;
+			font-size: 28px;
+			font-weight: bold;
+		}
+
+		.dog-head {
+			position: absolute;
+			top: -10px;
+			right: -70px;
+			width: 80px;
+			height: 40px;
+			border-radius: 40px;
+			border-width: 0 40px;
+			border-style: solid;
+			border-color:  transparent transparent transparent #333;
+		}
+
+		.dog-head::before {
+			position: absolute;
+			content: "";
+			top: 0;
+			right: -20px;
+			border-radius: 40px;
+			border-width: 20px;
+			border-style: solid;
+			border-color: #333 transparent transparent #333;
+			animation: dogBarkUp ease-in-out .4s infinite;
+		}
+
+		.dog-head::after {
+			position: absolute;
+			content: "";
+			top: 0;
+			right: -20px;
+			border-radius: 40px;
+			border-width: 20px;
+			border-style: solid;
+			border-color: transparent transparent #333;
+			animation: dogBarkDown ease-in-out .4s infinite;
+		}
+
+		.dog-front-leg {
+			position: absolute;
+			left: 20px;
+			bottom: -40px;
+			width: 20px;
+			height: 120px;
+			border-width: 60px 0;
+			border-style: solid;
+			border-color: transparent transparent black;
+			border-radius: 20px;
+			animation: runFirst ease-in-out .4s infinite;
+		}
+
+		.dog-front-leg::before {
+			position: absolute;
+			content: "";
+			top: calc(50% - 10px);
+			left: 0;
+			width: 20px;
+			height: 20px;
+			border-radius: 100%;
+			background-color: black;
+		}
+
+		.dog-back-leg {
+			position: absolute;
+			right: 20px;
+			bottom: -40px;
+			width: 20px;
+			height: 120px;
+			border-width: 60px 0;
+			border-style: solid;
+			border-color: transparent transparent black;
+			border-radius: 20px;
+			animation: runLast ease-in-out .4s infinite;
+		}
+
+		.dog-back-leg::before {
+			position: absolute;
+			content: "";
+			top: calc(50% - 10px);
+			left: 0;
+			width: 20px;
+			height: 20px;
+			border-radius: 100%;
+			background-color: black;
+		}
+		
+		.dog-tail {
+			position: absolute;
+			top: 10px;
+			left: -50px;
+			width: 120px;
+			height: 10px;
+			border-radius: 10px;
+			border-width: 0 60px;
+			border-style: solid;
+			border-color: transparent transparent transparent #333;
+			animation: tailWagging ease-in-out .4s infinite;
+		}
+
+		.gogo {
+			position: absolute;
+			bottom: 120px;
+			left: 300px;
+			width: 60px;
+			height: 30px;
+		}
+
+		.gogo1 {
+			position: absolute;
+			top: 0;
+			bottom: 0;
+			left: 0;
+			right: 30px;
+			font-size: 20px;
+			line-height: 30px;
+			color: darkred;
+			font-weight: bold;
+			animation: GoGo1 ease-in-out .25s infinite;
+		}
+
+		.gogo2 {
+			position: absolute;
+			top: 0;
+			bottom: 0;
+			left: 30px;
+			right: 0px;
+			font-size: 20px;
+			line-height: 30px;
+			color: darkred;
+			font-weight: bold;
+			animation: GoGo2 ease-in-out .25s infinite;
+		}
+
+		@keyframes movingSpace {
+			from {
+				left: 0;
+				right: -600px;
+			}
+			to {
+				left: -600px;
+				right: 0;
+			}
+		}
+
+		@keyframes runFirst {
+			0% {
+				transform: rotate(-45deg);
+			}
+			50% {
+				transform: rotate(45deg);
+			}
+			100% {
+				transform: rotate(-45deg);
+			}
+		}
+		@keyframes runLast {
+			0% {
+				transform: rotate(45deg);
+			}
+			50% {
+				transform: rotate(-45deg);
+			}
+			100% {
+				transform: rotate(45deg);
+			}
+		}
+
+		@keyframes tailWagging {
+			0% {
+				transform: rotate(40deg);
+			}
+			50% {
+				transform: rotate(20deg);
+			}
+			100% {
+				transform: rotate(40deg);
+			}
+		}
+
+		@keyframes dogBarkUp {
+			0% {
+				transform: rotate(35deg);
+			}
+			50% {
+				transform: rotate(5deg);
+			}
+			100% {
+				transform: rotate(35deg);
+			}
+		}
+
+		@keyframes dogBarkDown {
+			0% {
+				transform: rotate(-35deg);
+			}
+			50% {
+				transform: rotate(-5deg);
+			}
+			100% {
+				transform: rotate(-35deg);
+			}
+		}
+
+		@keyframes GoGo1 {
+			0% {
+				transform: scale(1);
+			}
+			50% {
+				transform: scale(.7);
+			}
+			100% {
+				transform: scale(1);
+			}
+		}
+
+		@keyframes GoGo2 {
+			0% {
+				transform: scale(.7);
+			}
+			50% {
+				transform: scale(1);
+			}
+			100% {
+				transform: scale(.7);
+			}
+		}
+	</style>
+
+
+	<div id="main">
+		<div class="bg-img"></div>
+		<div class="me">
+			<div class="text">
+				<h2>Me</h2>
+				<span>Mày nghĩ gì thế</span>
+				<span>Tao đang bị chó đuổi</span>
+			</div>
+			<div class="me-head"></div>
+			<div class="me-body"></div>
+			<div class="me-arm-left"></div>
+			<div class="me-arm-right"></div>
+			<div class="me-leg-left"></div>
+			<div class="me-leg-right"></div>
+		</div>
+		<div class="crush">
+			<div class="text">
+				<h2>My Crush</h2>
+				<span>Anh đừng chạy theo em nữa</span>
+				<span>Chúng ta chỉ là bạn</span>
+			</div>
+			<div class="crush-head"></div>
+			<div class="crush-body"></div>
+			<div class="crush-arm-left"></div>
+			<div class="crush-arm-right"></div>
+			<div class="crush-leg-left"></div>
+			<div class="crush-leg-right"></div>
+		</div>
+		<div class="dog">
+			<div class="dog-head"></div>
+			<div class="dog-body"></div>
+			<div class="dog-front-leg"></div>
+			<div class="dog-back-leg"></div>
+			<div class="dog-tail"></div>
+		</div>
+		<div class="gogo">
+			<div class="gogo1">Go</div>
+			<div class="gogo2">Go</div>
+		</div>
+	</div>
+</body>
+</html>
